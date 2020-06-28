@@ -5,13 +5,15 @@ from tcod.console import Console
 
 from actions import EscapeAction, MovementAction
 from entity import Entity
+from game_map import GameMap
 from input_handlers import EventHandler
 
 # this class will act as engine for the roguelike, drawing everything and handlind input
 class Engine:
-	def __init__(self, entities: Set[Entity], event_handler: EventHandler, player: Entity):
+	def __init__(self, entities: Set[Entity], event_handler: EventHandler, game_map: GameMap, player: Entity):
 		self.entities= entities
 		self.event_handler= event_handler
+		self.game_map = game_map
 		self.player= player
 		
 	# Just input events, getting the appropiate action in each case
@@ -23,13 +25,18 @@ class Engine:
 				continue
 			
 			if isinstance(action, MovementAction):
-				self.player.move(dx=action.dx, dy=action.dy)
+				# now lets only walk if we can
+				if self.game_map.tiles["walkable"][self.player.x + action.dx, self.player.y + action.dy]:
+					self.player.move(dx=action.dx, dy=action.dy)
 				
 			elif isinstance(action, EscapeAction):
 				raise SystemExit()
 				
 	# Just to draw
 	def render(self, console: Console, context: Context) -> None:
+		#render the map first
+		self.game_map.render(console)
+		
 		for entity in self.entities:
 			console.print(entity.x, entity.y, entity.char, fg= entity.color)
 			
