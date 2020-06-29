@@ -3,8 +3,8 @@ import tcod
 
 from rogueEngine import Engine
 from entity import Entity
-from game_map import GameMap
 from input_handlers import EventHandler
+from procgen import generate_dungeon
 
 def main() -> None:
 	screen_width = 80
@@ -25,7 +25,7 @@ def main() -> None:
 
 	entities= {npc, player}
 	
-	game_map = GameMap(map_width, map_height)
+	game_map = generate_dungeon(map_width, map_height)
 	
 	engine = Engine(entities=entities, event_handler=event_handler, game_map=game_map, player=player)
 
