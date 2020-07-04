@@ -10,6 +10,8 @@ class GameMap:
 		
 		# creates a 2d array filled with wall tiles, our algorithm will carve out rooms and tunnels
 		self.tiles = np.full((width, height), fill_value=tile_types.wall, order="F")
+		self.visible = np.full((width, height), fill_value= False, order= "F") # tiles the player can see
+		self.explored = np.full((width, height), fill_value= False, order= "F") # tiles the player has explored
 		
 	def in_bounds(self, x: int, y: int) -> bool:
 		"""Return True if x and y are inside of the bounds of this map."""
