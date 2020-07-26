@@ -35,6 +35,11 @@ class EscapeAction(Action):
 	pass
 	def perform(self) -> None:
 		raise SystemExit()
+		
+# I will do nothing this turn
+class WaitAction(Action):
+    def perform(self) -> None:
+        pass
 
 class ActionWithDirection(Action):
 	def __init__(self, entity: Entity, dx: int, dy: int):
